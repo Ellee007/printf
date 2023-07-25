@@ -1,4 +1,4 @@
-This is a collaborative project betwwen Aliyu Alhassan and Victor Chibuike, ALX cohort 16 students. The project is about a detailed procedure on creating a printf function.
+This is a collaborative project between Aliyu Alhassan and Victor Chibuike, ALX cohort 16 students. The project is about a detailed procedure on creating a printf function.
 
 # 0. I'm not going anywhere. You can print that wherever you want to. I'm here and I'm a Spur for life
 mandatory
