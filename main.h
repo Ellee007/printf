@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 /* Flag Modifier Macros */
 #define PLUS 1
@@ -17,7 +18,8 @@
 #define HASH_FLAG ((flags >> 2) & 1)
 #define ZERO_FLAG ((flags >> 3) & 1)
 #define NEG_FLAG ((flags >> 4) & 1)
-
+#define BUFF_SIZE 1024
+#define UNUSED(x) (void)(x)
 /* Length Modifier Macros */
 #define SHORT 1
 #define LONG 2
@@ -58,6 +60,7 @@ typedef struct flag_s
 	unsigned char value;
 } flag_t;
 
+/* Prototype for PrintF */
 int _printf(const char *format, ...);
 
 /* Conversion Specifier Functions */
