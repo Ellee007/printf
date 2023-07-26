@@ -55,38 +55,30 @@ int print_octal(va_list types, char buffer[],
 	unsigned long int init_num = num;
 
 	UNUSED(width);
-
 	num = convert_size_unsgnd(num, size);
-
 	if (num == 0)
 		buffer[i--] = '0';
-
 	buffer[BUFF_SIZE - 1] = '\0';
-
 	while (num > 0)
 	{
 		buffer[i--] = (num % 8) + '0';
 		num /= 8;
 	}
-
 	if (flags & F_HASH && init_num != 0)
 		buffer[i--] = '0';
-
 	i++;
-
 	return (write_unsgnd(0, i, buffer, flags, width, precision, size));
 }
-
-/************** PRINT UNSIGNED NUMBER IN HEXADECIMAL **************/
+/************** To PRINT UNSIGNED NUMBER IN HEXADECIMAL **************/
 /**
  * print_hexadecimal - Prints an unsigned number in hexadecimal notation
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
+ * @types: Names or Number of arguments
+ * @buffer: Container array to hold print
+ * @flags:  Calculates flags that are active
+ * @width: To get width length
+ * @precision: Precise Definitions
  * @size: Size specifier
- * Return: Number of chars printed
+ * Return: The hexadecimal number
  */
 int print_hexadecimal(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
@@ -95,7 +87,6 @@ int print_hexadecimal(va_list types, char buffer[],
 		flags, 'x', width, precision, size));
 }
 
-/************* PRINT UNSIGNED NUMBER IN UPPER HEXADECIMAL **************/
 /**
  * print_hexa_upper - Prints an unsigned number in upper hexadecimal notation
  * @types: Lista of arguments
@@ -113,7 +104,7 @@ int print_hexa_upper(va_list types, char buffer[],
 		flags, 'X', width, precision, size));
 }
 
-/************** PRINT HEXX NUM IN LOWER OR UPPER **************/
+/************** TO PRINT HEXA NUMS IN LOW OR UPPER CASE **************/
 /**
  * print_hexa - Prints a hexadecimal number in lower or upper
  * @types: Lista of arguments
@@ -135,27 +126,20 @@ int print_hexa(va_list types, char map_to[], char buffer[],
 	unsigned long int init_num = num;
 
 	UNUSED(width);
-
 	num = convert_size_unsgnd(num, size);
-
 	if (num == 0)
 		buffer[i--] = '0';
-
 	buffer[BUFF_SIZE - 1] = '\0';
-
 	while (num > 0)
 	{
 		buffer[i--] = map_to[num % 16];
 		num /= 16;
 	}
-
 	if (flags & F_HASH && init_num != 0)
 	{
 		buffer[i--] = flag_ch;
 		buffer[i--] = '0';
 	}
-
 	i++;
-
 	return (write_unsgnd(0, i, buffer, flags, width, precision, size));
 }
