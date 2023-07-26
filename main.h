@@ -64,38 +64,38 @@ typedef struct flag_s
 int _printf(const char *format, ...);
 
 /* Conversion Specifier Functions */
-unsigned int convert_c(va_list args, buffer_t *output,
+unsigned int convert_char(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_s(va_list args, buffer_t *output,
+unsigned int convert_string(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 unsigned int convert_di(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 unsigned int convert_percent(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_b(va_list args, buffer_t *output,
+unsigned int convert_binary(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_u(va_list args, buffer_t *output,
+unsigned int convert_unsigned(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_o(va_list args, buffer_t *output,
+unsigned int convert_octal(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_x(va_list args, buffer_t *output,
+unsigned int convert_hexadecimal(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_X(va_list args, buffer_t *output,
+unsigned int convert_hexa_upper(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_S(va_list args, buffer_t *output,
+unsigned int convert_non_printable(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_p(va_list args, buffer_t *output,
+unsigned int convert_pointer(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_r(va_list args, buffer_t *output,
+unsigned int convert_reverse(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_R(va_list args, buffer_t *output,
+unsigned int convert_rot13string(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 
 /* Handlers */
-unsigned char handle_flags(const char *flags, char *index);
-unsigned char handle_length(const char *modifier, char *index);
-int handle_width(va_list args, const char *modifier, char *index);
-int handle_precision(va_list args, const char *modifier, char *index);
+unsigned char handle_flags(const char *flags, char *i);
+unsigned char handle_length(const char *modifier, char *i);
+int handle_width(va_list args, const char *modifier, char *i);
+int handle_precision(va_list args, const char *modifier, char *);
 unsigned int (*handle_specifiers(const char *specifier))(va_list, buffer_t *,
 		unsigned char, int, int, unsigned char);
 
