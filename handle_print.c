@@ -12,7 +12,7 @@ unsigned int (*handle_print(const char *specifier))(va_list, buffer_t *,
 
 	converter_t converters[] = {
 		{'c', convert_c}, {'s', convert_string},
-		{'%', convert_percent}, {'i', convert_int},
+		{'%', convert_percent}, {'i', convert_di},
 		{'d', convert_di}, {'b', convert_binary},
 		{'u', convert_unsigned}, {'o', convert_octal},
 		{'x', convert_hexadecimal}, {'X', convert_hexa_upper},

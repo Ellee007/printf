@@ -12,7 +12,7 @@
  * @size: Size specifier
  * Return: Number of chars printe
  */
-unsigned int convert_c(va_list args, buffer_t *output,
+unsigned int convert_char(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len)
 {
 	char c = va_arg(args, int);
@@ -30,7 +30,7 @@ unsigned int convert_c(va_list args, buffer_t *output,
  * @size: Size specifier
  * Return: Number of chars printed
  */
-unsigned int convert_s(va_list args, buffer_t *output,
+unsigned int convert_string(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len)
 {
 	unsigned int length = 0, i;
@@ -85,8 +85,8 @@ unsigned int convert_s(va_list args, buffer_t *output,
  * @size: Size specifier
  * Return: Number of chars printed
  */
-int print_percent(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
+unsigned int convert_percent(va_list args, char buffer_t *output,
+	unsigned char flags, int wid, int prec, unsigned char len)
 {
 	UNUSED(types);
 	UNUSED(buffer);
@@ -108,8 +108,8 @@ int print_percent(va_list types, char buffer[],
  * @size: Size specifier
  * Return: Number of chars printed
  */
-int print_int(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
+unsigned int convert_di(va_list args, buffer_t *output,
+		unsigned char flags, int wid, int prec, unsigned char len);
 {
 	int i = BUFF_SIZE - 2;
 	int is_negative = 0;
@@ -152,8 +152,9 @@ int print_int(va_list types, char buffer[],
  * @size: Size specifier
  * Return: Numbers of char printed.
  */
-int print_binary(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
+
+unsigned int convert_b(va_list args, buffer_t *output,
+	unsigned char flags, int wid, int prec, unsigned char len);
 {
 	unsigned int n, m, i, sum;
 	unsigned int a[32];
