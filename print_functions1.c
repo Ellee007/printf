@@ -12,7 +12,7 @@
  * Return: Number of chars printed.
  */
 
-unsigned int convert_b(va_list args, buffer_t *output,
+unsigned int convert_unsignd(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);i
 {
 	int i = BUFF_SIZE - 2;
@@ -47,7 +47,7 @@ unsigned int convert_b(va_list args, buffer_t *output,
  * @size: Size specifier
  * Return: Number of chars printed
  */
-unsigned int convert_b(va_list args, buffer_t *output,
+unsigned int convert_octal(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 {
 
@@ -108,39 +108,31 @@ unsigned int convert_hexa_upper(va_list args, buffer_t *output,
 /************** TO PRINT HEXA NUMS IN LOW OR UPPER CASE **************/
 /**
  * print_hexa - Prints a hexadecimal number in lower or upper
- * @types: Lista of arguments
- * @map_to: Array of values to map the number to
- * @buffer: Buffer array to handle print
+ * @args: Lista of arguments
+ * @output: Array of values for buffer  number
  * @flags:  Calculates active flags
- * @flag_ch: Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
- * @size: Size specification
+ * @wid: get width
+ * @prec: Precision specification
+ * @len: Size specification
  * Return: Number of chars printed
  */
 unsigned int convert_pointer(va_list args, buffer_t *output,
 		unsigned char flags, int wid, int prec, unsigned char len);i
 {
-	int i = BUFF_SIZE - 2;
-	unsigned long int num = va_arg(types, unsigned long int);
-	unsigned long int init_num = num;
+	char *nul = "(nil)";
+	unsigned long int num;
+	unsigned int ren = 0;
 
-	UNUSED(width);
-	num = convert_size_unsgnd(num, size);
-	if (num == 0)
-		buffer[i--] = '0';
-	buffer[BUFF_SIZE - 1] = '\0';
-	while (num > 0)
+	(void)len;
+	
+	num = va_arg(args, unsigned long int);
+	if (num == '\0')
 	{
-		buffer[i--] = map_to[num % 16];
-		num /= 16;
+		return (_memcpy(output, nul, 5));
 	}
-	if (flags & F_HASH && init_num != 0)
-	{
-		buffer[i--] = flag_ch;
-		buffer[i--] = '0';
-	}
-	i++;
-	return (write_unsgnd(0, i, buffer, flags, width, precision, size));
+	flags |= 32;
+	ren += convert_ubase(output, address, "0123456789abcdef", flags
+			wid, prec);
+	ren += print_neg_width(output, ren, flags, wid);
+	return (ren);
 }

@@ -3,31 +3,40 @@
 /************************* PRINT CHAR *************************/
 
 /**
- * print_char - Prints a char
- * @types: List a of arguments
- * @buffer: Buffer array to handle print
+ * convert_char - Prints a char
+ * @args: List a of arguments
+ * @buffer_t: Buffer array to handle print
  * @flags:  Calculates active flags
- * @width: Width
- * @precision: Precision specification
- * @size: Size specifier
+ * @wid: Width
+ * @prec: Precision specification
+ * @len: Size specifier
  * Return: Number of chars printe
  */
-unsigned int convert_char(va_list args, buffer_t *output,
+unsigned int convert_char(va_list args, buffer_t *display,
 	unsigned char flags, int wid, int prec, unsigned char len)
 {
 	char c = va_arg(args, int);
+	unsigned int ren = 0;
+
+	(void)prec;
+	(void)len;
 
 	return (handle_write_char(c, buffer_t *output, flags, wid, prec, len));
+	ren += _memcpy(display, &c, 1);
+	ren += print_width(output, ren, flags, wid);
+	ren += print_neg_width(output, ren, flags, wid);
+
+	return (ren);
 }
 /************************* PRINT A STRING *************************/
 /**
  * print_string - Prints a string
- * @types: List a of arguments
- * @buffer: Buffer array to handle print
+ * @args: List a of arguments
+ * @output: Buffer array to handle print
  * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
+ * @wid: get width.
+ * @prec: Precision specification
+ * @len: Size specifier
  * Return: Number of chars printed
  */
 unsigned int convert_string(va_list args, buffer_t *output,
@@ -77,24 +86,29 @@ unsigned int convert_string(va_list args, buffer_t *output,
 /************************* PRINT PERCENT SIGN *************************/
 /**
  * print_percent - Prints a percent sign
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
+ * @args: Lista of arguments
+ * @otput: Buffer array to handle print
  * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
+ * @wid: get width.
+ * @prec: Precision specification
+ * @len: Size specifier
  * Return: Number of chars printed
  */
 unsigned int convert_percent(va_list args, char buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len)
 {
-	UNUSED(types);
-	UNUSED(buffer);
-	UNUSED(flags);
-	UNUSED(width);
-	UNUSED(precision);
-	UNUSED(size);
-	return (write(1, "%%", 1));
+	char percent = '%';
+	unsigned int ren = 0;
+
+	(void)args;
+	(void)prec;
+	(void)len;
+
+	ren += print_width(output, ren, flags, wid);
+	ren += _memcpy(output, &percent, 1);
+	ren += print_neg_width(output, ren, flags, wid);
+
+	return (ren);
 }
 
 /************************* PRINT INT *************************/
@@ -153,7 +167,7 @@ unsigned int convert_di(va_list args, buffer_t *output,
  * Return: Numbers of char printed.
  */
 
-unsigned int convert_b(va_list args, buffer_t *output,
+unsigned int convert_binary(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 {
 	unsigned int n, m, i, sum;

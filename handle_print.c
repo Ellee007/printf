@@ -8,10 +8,10 @@
 unsigned int (*handle_print(const char *specifier))(va_list, buffer_t *,
 	unsigned char, int, int, unsigned char)
 {
-	int i,
+	int i;
 
 	converter_t converters[] = {
-		{'c', convert_c}, {'s', convert_string},
+		{'c', convert_char}, {'s', convert_string},
 		{'%', convert_percent}, {'i', convert_di},
 		{'d', convert_di}, {'b', convert_binary},
 		{'u', convert_unsigned}, {'o', convert_octal},
