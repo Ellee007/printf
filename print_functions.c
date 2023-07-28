@@ -30,7 +30,7 @@ unsigned int convert_char(va_list args, buffer_t *display,
 }
 /************************* PRINT A STRING *************************/
 /**
- * print_string - Prints a string
+ * pconvert_string - Prints a string
  * @args: List a of arguments
  * @output: Buffer array to handle print
  * @flags:  Calculates active flags
@@ -42,50 +42,35 @@ unsigned int convert_char(va_list args, buffer_t *display,
 unsigned int convert_string(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len)
 {
-	unsigned int length = 0, i;
-	char *str = va_arg(types, char *);
+	int count;
+	unsigned int ren = 0;
+	char *str, *null = "(null)";
 
-	UNUSED(buffer_t *output);
-	UNUSED(flags);
-	UNUSED(wid);
-	UNUSED(prec);
-	UNUSED(size);
+	(void)len;
+	(void)flags;
+	
+	str = va_arg(args, char *);
 	if (str == NULL)
 	{
-		str = "(null)";
-		if (prec >= 6)
-			str = "      ";
+		return (_memcpy(output, null, 6));
 	}
-
-	while (str[length] != '\0')
-		length++;
-
-	if (prec >= 0 && prec < length)
-		length = prec;
-
-	if (wid > length)
+	for (size = 0; *(str + count);)
+		count++;
+	ren += print_string_width(output, flags, wid, prec, size);
+	prec = (prec == -1) ? count : prec;
+	while (*str != '\0' && prec > 0)
 	{
-		if (flags & F_MINUS)
-		{
-			write(1, &str[0], length);
-			for (i = wid - length; i > 0; i--)
-				write(1, " ", 1);
-			return (wid);
-		}
-		else
-		{
-			for (i = wid - length; i > 0; i--)
-				write(1, " ", 1);
-			write(1, &str[0], length);
-			return (wid);
-		}
+		ren += _memcpy(output, str, 1);
+		prec--;
+		str++;
 	}
+	ren += print_neg_width(output, ren, flags, wid);
 
-	return (write(1, str, length));
+	return (ren);
 }
 /************************* PRINT PERCENT SIGN *************************/
 /**
- * print_percent - Prints a percent sign
+ * convert_percent - Prints a percent sign
  * @args: Lista of arguments
  * @otput: Buffer array to handle print
  * @flags:  Calculates active flags
@@ -108,96 +93,98 @@ unsigned int convert_percent(va_list args, char buffer_t *output,
 	ren += _memcpy(output, &percent, 1);
 	ren += print_neg_width(output, ren, flags, wid);
 
-	return (ren);
+	return (ren);`
 }
 
 /************************* PRINT INT *************************/
 /**
- * print_int - Print int
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
+ * convert_di - Print int
+ * @srgs: Lista of arguments
+ * @output: Buffer array to handle print
  * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
+ * @wid: get width.
+ * @prec: Precision specification
+ * @len: Size specifier
  * Return: Number of chars printed
  */
 unsigned int convert_di(va_list args, buffer_t *output,
 		unsigned char flags, int wid, int prec, unsigned char len);
 {
-	int i = BUFF_SIZE - 2;
-	int is_negative = 0;
-	long int n = va_arg(types, long int);
-	unsigned long int num;
+	char pad, space = ' ', neg = '-', plus = '+';
+	long int n, rep;
+	unsigned int ren = 0, num = 0;
 
-	n = convert_size_number(n, size);
-
-	if (n == 0)
-		buffer[i--] = '0';
-
-	buffer[BUFF_SIZE - 1] = '\0';
-	num = (unsigned long int)n;
-
-	if (n < 0)
+	if (len == LONG)
+		n = va_arg(args, long int);
+	else
+		n = va_arg(args, int);
+	if (len == SHORT)
+		n = (short)n;
+	if (SPACE_FLAG == 1 && d >= 0)
+		ren += _memcpy(output, &space, 1);
+	if (prec <= 0 && NEG_FLAG == 0)
 	{
-		num = (unsigned long int)((-1) * n);
-		is_negative = 1;
-	}
+		if (n == LONG_MIN)
+		{
+			num += 19;
+		}
+		else
+		{
+			for (rep = (n < 0) ? -n : n; rep > 0; rep /= 10)
+				num++;
+		}
+		num += (n == 0) ? 1 : 0;
+		num += (n < 0) ? 1 : 0;
+		num += (PLUS_FLAG == 1 && n >= 0) ? 1 : 0;
+		num += (SPACE_FLAG == 1 && n >= 0) ? 1 : 0;
 
-	while (num > 0)
+		if (ZERO_FLAG == 1 && PLUS_FLAG == 1 && n >= 0)
+			ren += _memcpy(output, &plus, 1);
+		if (ZERO_FLAG == 1 && n < 0)
+		{
+			ren += _memcpy(output, &neg, 1);
+		}
+		pad = (ZERO_FLAG == 1) ? '0' : ' ';
+		for (wid -= num; wid > 0; wid--)
+		{
+			ren += _memcpy(output, &pad, 1);
+		}
+	}
+	if (ZERO_FLAG == 0 && n < 0)
 	{
-		buffer[i--] = (num % 10) + '0';
-		num /= 10;
+		ren += _memcpy(output, &neg, 1);
 	}
-
-	i++;
-
-	return (write_number(is_negative, i, buffer, flags, width, precision, size));
+	if (ZERO_FLAG == 0 && (PLUS_FLAG == 1 && n >= 0))
+	{
+		ren += _memcpy(output, &plus, 1);
+	}
+	if (!(n == 0 && prec == 0))
+	{
+		ren += convert_sbase(output, d, "0123456789",
+				flags, 0, prec);
+	}
+	ren += print_neg_width(output, ren, flags, wid);
+	return (ren);
 }
-
 /************************* PRINT BINARY *************************/
 /**
- * print_binary - Prints an unsigned number
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
+ * convert_binary - Prints an unsigned number
+ * @args: Lista of arguments
+ * @output: Buffer array to handle print
  * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
+ * @wid: get width.
+ * @prec: Precision specification
+ * @len: Size specifier
  * Return: Numbers of char printed.
  */
 
 unsigned int convert_binary(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 {
-	unsigned int n, m, i, sum;
-	unsigned int a[32];
-	int count;
+	unsigned int sum;
+	
+	sum = va_arg(args, unsigned int);
+	(void)len;
 
-	UNUSED(buffer);
-	UNUSED(flags);
-	UNUSED(width);
-	UNUSED(precision);
-	UNUSED(size);
-
-	n = va_arg(types, unsigned int);
-	m = 2147483648; /* (2 ^ 31) */
-	a[0] = n / m;
-	for (i = 1; i < 32; i++)
-	{
-		m /= 2;
-		a[i] = (n / m) % 2;
-	}
-	for (i = 0, sum = 0, count = 0; i < 32; i++)
-	{
-		sum += a[i];
-		if (sum || i == 31)
-		{
-			char z = '0' + a[i];
-
-			write(1, &z, 1);
-			count++;
-		}
-	}
-	return (count);
+	return (convert_ubase(output, sum, "01", flags, wid, prec));
 }

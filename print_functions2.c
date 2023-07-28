@@ -70,7 +70,8 @@ unsigned int convert_non_printable(va_list args, buffer_t *output,
 	unsigned int ren = 0;
 	
 	(void)len;
-
+	
+	str = va_arg(args, char *);
 	if (str == NULL)
 		return (_memcpy(output, null, 6));
 	

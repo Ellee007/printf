@@ -72,42 +72,89 @@ unsigned int convert_octal(va_list args, buffer_t *output,
 }
 /************** To PRINT UNSIGNED NUMBER IN HEXADECIMAL **************/
 /**
- * print_hexadecimal - Prints an unsigned number in hexadecimal notation
- * @types: Names or Number of arguments
- * @buffer: Container array to hold print
+ * convert_hexadecimal - Prints an unsigned number in hexadecimal notation
+ * @args: Names or Number of arguments
+ * @output: Container array to hold print
  * @flags:  Calculates flags that are active
- * @width: To get width length
- * @precision: Precise Definitions
- * @size: Size specifier
+ * @wid: To get width length
+ * @prec: Precise Definitions
+ * @len: Size specifier
  * Return: The hexadecimal number
  */
 unsigned int convert_hexadecimal(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 {
-	return (print_hexa(types, "0123456789abcdef", buffer,
-		flags, 'x', width, precision, size));
+	char *top = "0x";
+	unsigned int ren = 0;
+	unsigned long int digit;
+	
+	if (len == LONG)
+	{
+		digit = va_arg(args, unsigned long int);
+	}
+	else
+		digit = va_arg(args, unsigned int);
+	
+	if (len == SHORT)
+	{
+		digit = (unsigned short)digit;
+	}
+	if (HASH_FLAG == 1 && != 0)
+	{
+		ren += _memcpy(output, top, 2);
+	}
+	if (!(digit == 0 && prec == 0))
+	{
+		ren += convert_ubase(output, num, "0123456789abcdef",
+				flags, wid, prec);
+	}
+	ren += print_neg_width(output, ren, flags, wid);
+	return (ren);
 }
 
 /**
- * print_hexa_upper - Prints an unsigned number in upper hexadecimal notation
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
+ * convert_hexa_upper - Prints an unsigned number in upper hexadecimal notation
+ * @args: List of arguments
+ * @output: Buffer array to handle print
  * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
+ * @wid: get width
+ * @prec: Precision specification
+ * @len: Size specifier
  * Return: Number of chars printed
  */
 unsigned int convert_hexa_upper(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);i
 {
-	return (print_hexa(types, "0123456789ABCDEF", buffer,
-		flags, 'X', width, precision, size));
+	char *top = "0X";
+	unsigned long int digit;
+	unsigned int ren = 0;
+
+	if (len == LONG)
+	{
+		digit = va_args(args, unsigned long);
+	}
+	else
+	{
+		digit = va_arg(args, unsigned int);
+	}
+	if (len == SHORT)
+	{
+		digit = (unsigned short)digit;
+	}
+	if (HASH_FLAG == ! && digit != 0)
+		ren += _memcpy(output, top,, 2);
+	if (!(digit == 0 && prec == 0)
+	{
+		ren += conver_ubase(output, digit, "0123456789ABCDEF",
+				flags, wid, prec);
+	}
+	ren += print_neg_width(output, ren, flags, wid);
+	return (ren);
 }
 
 /************** TO PRINT HEXA NUMS IN LOW OR UPPER CASE **************/
 /**
- * print_hexa - Prints a hexadecimal number in lower or upper
+ * convert_pointer - Prints a hexadecimal number in lower or upper
  * @args: Lista of arguments
  * @output: Array of values for buffer  number
  * @flags:  Calculates active flags
