@@ -75,7 +75,7 @@ unsigned int convert_percent(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 unsigned int convert_binary(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-unsigned int convert_unsigned(va_list args, buffer_t *output,
+unsigned int convert_unsignd(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 unsigned int convert_octal(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
