@@ -5,7 +5,7 @@
 /**
  * convert_char - Prints a char
  * @args: List a of arguments
- * @output: Buffer array to handle print
+ * @display: Buffer array to handle print
  * @flags:  Calculates active flags
  * @wid: Width
  * @prec: Precision specification
@@ -21,10 +21,11 @@ unsigned int convert_char(va_list args, buffer_t *display,
 	(void)prec;
 	(void)len;
 
-	return (handle_write_char(c, buffer_t *output, flags, wid, prec, len));
+	c = va_arg(args, int);
+
 	ren += _memcpy(display, &c, 1);
-	ren += print_width(output, ren, flags, wid);
-	ren += print_neg_width(output, ren, flags, wid);
+	ren += print_width(display, ren, flags, wid);
+	ren += print_neg_width(display, ren, flags, wid);
 
 	return (ren);
 }
@@ -48,15 +49,14 @@ unsigned int convert_string(va_list args, buffer_t *output,
 
 	(void)len;
 	(void)flags;
-	
 	str = va_arg(args, char *);
 	if (str == NULL)
 	{
 		return (_memcpy(output, null, 6));
 	}
-	for (size = 0; *(str + count);)
+	for (count = 0; *(str + count);)
 		count++;
-	ren += print_string_width(output, flags, wid, prec, size);
+	ren += print_string_width(output, flags, wid, prec, count);
 	prec = (prec == -1) ? count : prec;
 	while (*str != '\0' && prec > 0)
 	{
@@ -72,14 +72,14 @@ unsigned int convert_string(va_list args, buffer_t *output,
 /**
  * convert_percent - Prints a percent sign
  * @args: Lista of arguments
- * @otput: Buffer array to handle print
+ * @output: Buffer array to handle print
  * @flags:  Calculates active flags
  * @wid: get width.
  * @prec: Precision specification
  * @len: Size specifier
  * Return: Number of chars printed
  */
-unsigned int convert_percent(va_list args, char buffer_t *output,
+unsigned int convert_percent(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len)
 {
 	char percent = '%';
@@ -93,13 +93,13 @@ unsigned int convert_percent(va_list args, char buffer_t *output,
 	ren += _memcpy(output, &percent, 1);
 	ren += print_neg_width(output, ren, flags, wid);
 
-	return (ren);`
+	return (ren);
 }
 
 /************************* PRINT INT *************************/
 /**
  * convert_di - Print int
- * @srgs: Lista of arguments
+ * @args: Lista of arguments
  * @output: Buffer array to handle print
  * @flags:  Calculates active flags
  * @wid: get width.
@@ -108,7 +108,7 @@ unsigned int convert_percent(va_list args, char buffer_t *output,
  * Return: Number of chars printed
  */
 unsigned int convert_di(va_list args, buffer_t *output,
-		unsigned char flags, int wid, int prec, unsigned char len);
+		unsigned char flags, int wid, int prec, unsigned char len)
 {
 	char pad, space = ' ', neg = '-', plus = '+';
 	long int n, rep;
@@ -120,49 +120,34 @@ unsigned int convert_di(va_list args, buffer_t *output,
 		n = va_arg(args, int);
 	if (len == SHORT)
 		n = (short)n;
-	if (SPACE_FLAG == 1 && d >= 0)
+	if (SPACE_FLAG == 1 && n >= 0)
 		ren += _memcpy(output, &space, 1);
 	if (prec <= 0 && NEG_FLAG == 0)
 	{
 		if (n == LONG_MIN)
-		{
 			num += 19;
-		}
 		else
-		{
 			for (rep = (n < 0) ? -n : n; rep > 0; rep /= 10)
 				num++;
-		}
 		num += (n == 0) ? 1 : 0;
 		num += (n < 0) ? 1 : 0;
 		num += (PLUS_FLAG == 1 && n >= 0) ? 1 : 0;
 		num += (SPACE_FLAG == 1 && n >= 0) ? 1 : 0;
-
 		if (ZERO_FLAG == 1 && PLUS_FLAG == 1 && n >= 0)
 			ren += _memcpy(output, &plus, 1);
 		if (ZERO_FLAG == 1 && n < 0)
-		{
 			ren += _memcpy(output, &neg, 1);
-		}
 		pad = (ZERO_FLAG == 1) ? '0' : ' ';
 		for (wid -= num; wid > 0; wid--)
-		{
 			ren += _memcpy(output, &pad, 1);
-		}
 	}
 	if (ZERO_FLAG == 0 && n < 0)
-	{
 		ren += _memcpy(output, &neg, 1);
-	}
 	if (ZERO_FLAG == 0 && (PLUS_FLAG == 1 && n >= 0))
-	{
 		ren += _memcpy(output, &plus, 1);
-	}
 	if (!(n == 0 && prec == 0))
-	{
-		ren += convert_sbase(output, d, "0123456789",
+		ren += convert_sbase(output, n, "0123456789",
 				flags, 0, prec);
-	}
 	ren += print_neg_width(output, ren, flags, wid);
 	return (ren);
 }
@@ -179,10 +164,10 @@ unsigned int convert_di(va_list args, buffer_t *output,
  */
 
 unsigned int convert_binary(va_list args, buffer_t *output,
-	unsigned char flags, int wid, int prec, unsigned char len);
+	unsigned char flags, int wid, int prec, unsigned char len)
 {
 	unsigned int sum;
-	
+
 	sum = va_arg(args, unsigned int);
 	(void)len;
 

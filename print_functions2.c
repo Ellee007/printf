@@ -17,13 +17,11 @@ unsigned int convert_non_printable(va_list args, buffer_t *output,
 	int count, ind;
 	char *str, *null = "(null)", *hex = "\\x", zero = '0';
 	unsigned int ren = 0;
-	
+
 	(void)len;
-	
 	str = va_arg(args, char *);
 	if (str == NULL)
 		return (_memcpy(output, null, 6));
-	
 	for (count = 0; str[count];)
 		count++;
 	ren += print_string_width(output, flags, wid, prec, count);
@@ -34,7 +32,7 @@ unsigned int convert_non_printable(va_list args, buffer_t *output,
 		if (*(str + ind) < 32 || *(str + ind) >= 127)
 		{
 			ren += _memcpy(output, hex, 2);
-			if (*(str +ind) < 16)
+			if (*(str + ind) < 16)
 			{
 				ren += _memcpy(output, &zero, 1);
 			}
@@ -59,23 +57,23 @@ unsigned int convert_non_printable(va_list args, buffer_t *output,
  * Return: Numbers of chars printed
  */
 
-unsigned int convert_reverse(va_list args, buffer *output,
+unsigned int convert_reverse(va_list args, buffer_t *output,
 		unsigned char flags, int wid, int prec, unsigned char len)
 {
 	char *str, *null = "(null)";
 	int i, count, end;
-	unsigned int ren = 0
+	unsigned int ren = 0;
 
 	(void)flags;
 	(void)len;
 
-	str = va_arg(types, char *);
+	str = va_arg(args, char *);
 
 	if (str == NULL)
 	{
 		return (_memcpy(output, null, 6));
 	}
-	for (count = 0; *(str + size);)
+	for (count = 0; *(str + count);)
 		count++;
 	ren += print_string_width(output, flags, wid, prec, count);
 	end = count - 1;
@@ -101,7 +99,7 @@ unsigned int convert_reverse(va_list args, buffer *output,
  * @len: Size specifier
  * Return: Numbers of chars printed
  */
-unsigned int convert_rot13string(va_list args, buffer *output,
+unsigned int convert_rot13string(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len)
 {
 	char *str, *nul = "(null)";
@@ -111,13 +109,11 @@ unsigned int convert_rot13string(va_list args, buffer *output,
 	char *rot13 = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 
 	str = va_arg(args, char *);
-	
 	if (str == NULL)
-		return (_memcpy(output, null, 6));
+		return (_memcpy(output, nul, 6));
 	for (count = 0; *(str + count);)
 		count++;
 	ren += print_string_width(output, flags, wid, prec, len);
-	
 	prec = (prec == -1) ? count : prec;
 	for (i = 0; *(str + i) != '\0' && i < prec; i++)
 	{

@@ -31,7 +31,7 @@ unsigned int convert_sbase(buffer_t *output, long int num, char *base,
 	{
 		for (; prec > 1; prec--, wid--) /* Handle for prec */
 			ren += _memcpy(output, &pad, 1);
-		if (NEG_FLAG == 0) 
+		if (NEG_FLAG == 0)
 		{
 			pad = (ZERO_FLAG == 1) ? '0' : ' ';
 			for (; wid > 1; wid--)
@@ -40,7 +40,7 @@ unsigned int convert_sbase(buffer_t *output, long int num, char *base,
 	}
 
 	number = base[(num < 0 ? -1 : 1) * (num % count)];
-	_memcpy(output, &digit, 1);
+	_memcpy(output, &number, 1);
 
 	return (ren);
 }
@@ -72,7 +72,7 @@ unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base,
 
 	else
 	{
-		if (((flags >> 5) & 1) == 1) 
+		if (((flags >> 5) & 1) == 1)
 		{
 			wid -= 2;
 			prec -= 2;
@@ -87,7 +87,7 @@ unsigned int convert_ubase(buffer_t *output, unsigned long int num, char *base,
 				ren += _memcpy(output, &pad, 1);
 		}
 		if (((flags >> 5) & 1) == 1)
-			ren += _memcpy(output, *top, 2);
+			ren += _memcpy(output, top, 2);
 	}
 
 	number = base[(num % count)];

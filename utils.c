@@ -17,7 +17,7 @@ unsigned int print_neg_width(buffer_t *output, unsigned int display,
 	{
 		for (wid -= display; wid > 0; wid--)
 		{
-			ren += _memcpy(output, &side, 1)
+			ren += _memcpy(output, &side, 1);
 		}
 	}
 	return (ren);
@@ -32,7 +32,7 @@ unsigned int print_neg_width(buffer_t *output, unsigned int display,
  *Return: The number of bytes
  */
 unsigned int print_width(buffer_t *output, unsigned int display,
-		unsinged char flags, int wid)
+		unsigned char flags, int wid)
 {
 	char side = ' ';
 	unsigned int ren = 0;
@@ -57,8 +57,8 @@ unsigned int print_width(buffer_t *output, unsigned int display,
  *@count: the size of string
  *Return: the number of stored bytes
  */
-unsigned int print_string_width(buffer_t *output, int wid,
-		unsigned char flags, int prec, int count)
+unsigned int print_string_width(buffer_t *output,
+		unsigned char flags, int prec, int wid, int count)
 {
 	char side = ' ';
 	unsigned int ren = 0;
@@ -71,4 +71,5 @@ unsigned int print_string_width(buffer_t *output, int wid,
 			ren += _memcpy(output, &side, 1);
 		}
 	}
+	return (ren);
 }

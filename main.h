@@ -63,8 +63,9 @@ typedef struct flag_s
 
 int _printf(const char *format, ...);
 
+
 /* Conversion Specifier Functions */
-unsigned int convert_char(va_list args, buffer_t *output,
+unsigned int convert_char(va_list args, buffer_t *display,
 	unsigned char flags, int wid, int prec, unsigned char len);
 unsigned int convert_string(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
@@ -90,7 +91,6 @@ unsigned int convert_reverse(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 unsigned int convert_rot13string(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
-
 /* Handlers */
 unsigned char handle_flags(const char *flags, char *i);
 unsigned char handle_length(const char *modifier, char *i);
