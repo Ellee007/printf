@@ -5,7 +5,7 @@
 /**
  * convert_char - Prints a char
  * @args: List a of arguments
- * @buffer_t: Buffer array to handle print
+ * @output: Buffer array to handle print
  * @flags:  Calculates active flags
  * @wid: Width
  * @prec: Precision specification
