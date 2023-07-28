@@ -5,7 +5,7 @@
  * @int: for integer variable
  * Return: 1 or 2;
  */
-unsigned int (*handle_print(const char *specifier))(va_list, buffer_t *,
+unsigned int (*handle_specifiers(const char *specifier))(va_list, buffer_t *,
 	unsigned char, int, int, unsigned char)
 {
 	int i;

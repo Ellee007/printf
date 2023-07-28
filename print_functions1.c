@@ -2,75 +2,84 @@
 
 /************************* PRINT UNSIGNED NUMBER *************************/
 /**
- * print_unsigned - Prints an unsigned number
- * @types: List a of arguments
- * @buffer: Buffer array to handle print
+ * convert_unsignd - To print unsigned number
+ * @args: List a of arguments
+ * @output: Buffer array to handle print
  * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
+ * @wid: get width
+ * @prec: Precision specification
+ * @len: Size specifier
  * Return: Number of chars printed.
  */
 
 unsigned int convert_unsignd(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);i
 {
-	int i = BUFF_SIZE - 2;
-	unsigned long int num = va_arg(types, unsigned long int);
-
-	num = convert_size_unsgnd(num, size);
-
-	if (num == 0)
-		buffer[i--] = '0';
-
-	buffer[BUFF_SIZE - 1] = '\0';
-
-	while (num > 0)
+	unsigned int digit;
+	unsigned long int ren = 0; 
+	
+	if (len == LONG)
 	{
-		buffer[i--] = (num % 10) + '0';
-		num /= 10;
+		digit = va_arg(args, unsigned long int);
 	}
-
-	i++;
-
-	return (write_unsgnd(0, i, buffer, flags, width, precision, size));
+	{
+	else
+	{
+		digit = va_arg(args, unsigned int);
+	}
+	if (len == SHORT)
+	{
+		digit = (unsigned short)digit;
+	}
+	if (!(digit == 0 && prec == 0))
+	{
+		ren += convert_ubase(output, digit, "0123456789",
+				flags, wid, prec);
+	}
+	ren += print_neg_width(output, ren, flags, wid);
+	return (ren);
+	}
 }
 
 /************* PRINT UNSIGNED NUMBER IN OCTAL  ****************/
 /**
- * print_octal - Prints an unsigned number in octal notation
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
+ * convert_octal - Prints an unsigned number in octal notation
+ * @args Lista of arguments
+ * @output: Buffer array to handle print
  * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
+ * @wid: get width
+ * @prec: Precision specification
+ * @len: Size specifier
  * Return: Number of chars printed
  */
 unsigned int convert_octal(va_list args, buffer_t *output,
 	unsigned char flags, int wid, int prec, unsigned char len);
 {
 
-	int i = BUFF_SIZE - 2;
-	unsigned long int num = va_arg(types, unsigned long int);
-	unsigned long int init_num = num;
-
-	UNUSED(width);
-	num = convert_size_unsgnd(num, size);
-	if (num == 0)
-		buffer[i--] = '0';
-	buffer[BUFF_SIZE - 1] = '\0';
-	while (num > 0)
+	unsigned long int digit;
+	unsigned int ren = 0;
+	char zero = '0';
+	if (len == LONG)
 	{
-		buffer[i--] = (num % 8) + '0';
-		num /= 8;
+		digit = va_arg(args, unsigned long int);
 	}
-	if (flags & F_HASH && init_num != 0)
-		buffer[i--] = '0';
-	i++;
-	return (write_unsgnd(0, i, buffer, flags, width, precision, size));
+	else
+	{
+		digit = va_args(args, unsigned int);
+	}
+	if (len == SHORT)
+	{
+		digit = (unsigned short)digit;
+	}
+	if (HASH_FLAG == 1 && digit != 0)
+	{
+		ren += convert_ubase(output, digit, "01234567"
+				flags, wid, prec);
+	}
+	ren += print_neg_width(output, ren,flags, wid);
+	return (ren);
 }
-/************** To PRINT UNSIGNED NUMBER IN HEXADECIMAL **************/
+ /********************PRINT UNSIGNED NUMBER IN HEXADECIMAL **************/
 /**
  * convert_hexadecimal - Prints an unsigned number in hexadecimal notation
  * @args: Names or Number of arguments
