@@ -21,8 +21,6 @@ unsigned int convert_char(va_list args, buffer_t *display,
 	(void)prec;
 	(void)len;
 
-	c = va_arg(args, int);
-
 	ren += _memcpy(display, &c, 1);
 	ren += print_width(display, ren, flags, wid);
 	ren += print_neg_width(display, ren, flags, wid);
